@@ -37,10 +37,26 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+   
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+     [NSTimer scheduledTimerWithTimeInterval:0.01 target:self selector:@selector(updateDeviceMotion) userInfo:nil repeats:YES];
+    self.motionManager = [[CMMotionManager alloc] init];
+    self.motionManager.deviceMotionUpdateInterval = 1.0f/60.0f;
+    [self.motionManager startDeviceMotionUpdatesUsingReferenceFrame:CMAttitudeReferenceFrameXArbitraryCorrectedZVertical];
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    if(self.motionManager != nil) {
+        [self.motionManager stopDeviceMotionUpdates];
+        self.motionManager = nil;
+    }
 }
 
 - (IBAction)BtnConnectClicked:(id)sender {
@@ -48,6 +64,7 @@
 }
 
 - (IBAction)BtnSendMsg:(id)sender {
+    //TODO ggg
     NSString *response  = [NSString stringWithFormat:@"iam:%@", _textFieldIPAddress.text];
     NSData *data = [[NSData alloc] initWithData:[response dataUsingEncoding:NSASCIIStringEncoding]];
     [_outputStream write:[data bytes] maxLength:[data length]];
@@ -117,5 +134,24 @@
     [_inputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
     [_inputStream setDelegate:nil];
     _outputStream = nil;
+}
+
+-(void)updateDeviceMotion
+{
+    CMDeviceMotion *deviceMotion = self.motionManager.deviceMotion;
+    if(deviceMotion == nil)
+    {
+        return;
+    }
+    CMAttitude *attitude = deviceMotion.attitude;
+    CMAcceleration userAcceleration = deviceMotion.userAcceleration;
+    float roll = attitude.roll;
+    float pitch = attitude.pitch;
+    float yaw = attitude.yaw;
+    float accX = userAcceleration.x;
+    float accY = userAcceleration.y;
+    float accZ = userAcceleration.z;
+    
+    NSLog(@"Attitude: %f, %f, %f; Accel: %f, %f, %f", roll,pitch,yaw, accX, accY, accZ);
 }
 @end

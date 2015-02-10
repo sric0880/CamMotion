@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CF45C4771A89E445003516A3 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF45C4761A89E445003516A3 /* CoreMotion.framework */; };
 		CF9367A11A886DDD006A9ED4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CF9367A01A886DDD006A9ED4 /* main.m */; };
 		CF9367A41A886DDD006A9ED4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CF9367A31A886DDD006A9ED4 /* AppDelegate.m */; };
 		CF9367A71A886DDD006A9ED4 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CF9367A61A886DDD006A9ED4 /* ViewController.m */; };
@@ -15,6 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CF45C4761A89E445003516A3 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		CF93679B1A886DDD006A9ED4 /* CameraControllerClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CameraControllerClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF93679F1A886DDD006A9ED4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CF9367A01A886DDD006A9ED4 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -31,6 +33,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CF45C4771A89E445003516A3 /* CoreMotion.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -40,6 +43,7 @@
 		CF9367921A886DDC006A9ED4 = {
 			isa = PBXGroup;
 			children = (
+				CF45C4761A89E445003516A3 /* CoreMotion.framework */,
 				CF93679D1A886DDD006A9ED4 /* CameraControllerClient */,
 				CF93679C1A886DDD006A9ED4 /* Products */,
 			);

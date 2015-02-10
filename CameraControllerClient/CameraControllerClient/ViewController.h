@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CoreMotion/CoreMotion.h>
 
 @interface ViewController : UIViewController <NSStreamDelegate>
 
@@ -16,5 +17,5 @@
 @property (weak, nonatomic) IBOutlet UITextField *textFieldIPAddress;
 @property (nonatomic, retain) NSInputStream *inputStream;
 @property (nonatomic, retain) NSOutputStream *outputStream;
-@property (nonatomic, retain) NSMutableData *sendData;
+@property (nonatomic, retain) CMMotionManager* motionManager;
 @end
