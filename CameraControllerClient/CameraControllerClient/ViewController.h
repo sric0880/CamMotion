@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <CoreMotion/CoreMotion.h>
 
-@interface ViewController : UIViewController <NSStreamDelegate>
+@interface ViewController : UIViewController <NSStreamDelegate,UIGestureRecognizerDelegate>
 
 - (IBAction)BtnConnectClicked:(id)sender;
 @property (weak, nonatomic) IBOutlet UILabel *labelToast;

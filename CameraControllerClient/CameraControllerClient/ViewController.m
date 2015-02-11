@@ -8,9 +8,10 @@
 
 #import "ViewController.h"
 
-@interface ViewController ()
-            
 
+
+@interface ViewController ()
+@property float scale;
 @end
 
 @implementation ViewController
@@ -37,7 +38,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-   
+    self.scale = 1.0f;
+    UIPinchGestureRecognizer *pgr = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinch:)];
+    [pgr setDelegate:self];
+    [self.view addGestureRecognizer:pgr];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -155,6 +160,12 @@
     
     [_outputStream write:[data bytes] maxLength:[data length]];
     
-    NSLog(@"Attitude: %f, %f, %f; Accel: %f, %f, %f", roll,pitch,yaw, accX, accY, accZ);
+    NSLog(@"Attitude: %f, %f, %f; Accel: %f, %f, %f", roll, pitch, yaw, accX, accY, accZ);
+}
+
+-(void)pinch:(id)sender
+{
+    self.scale = [(UIPinchGestureRecognizer*)sender scale];
+    NSLog(@"scale: %f", self.scale);
 }
 @end

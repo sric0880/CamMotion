@@ -12,11 +12,25 @@ public class CameraMotion : MonoBehaviour {
 	//    public float moveSpeed;
 	#region Animation Clip Record
 	public float rotationSensitivity = 0.5f;
-	public float MoveSensitivity = 2f;
+	public float moveSensitivity = 2f;
 	private bool recording;
     private float startTime;
 	private List<float> data = new List<float>();
-	private string[] curveNames = new[] { "localRotation.x", "localRotation.y", "localRotation.z", "localRotation.w", "localPosition.x", "localPosition.y", "localPosition.z" };
+	//TODO add more curve...
+	private string[] curveNames = new[] { "localRotation.x", "localRotation.y", "localRotation.z", "localRotation.w", "localPosition.x", "localPosition.y", "localPosition.z", "field of view" };
+	private Type[] types = new[] { typeof(Transform), typeof(Transform), typeof(Transform), typeof(Transform), typeof(Transform), typeof(Transform), typeof(Transform), typeof(Camera)};
+
+	void WriteToData() {
+		data.Add(Time.realtimeSinceStartup - startTime);
+		data.Add(transform.localRotation.x);
+		data.Add(transform.localRotation.y);
+		data.Add(transform.localRotation.z);
+		data.Add(transform.localRotation.w);
+		data.Add(transform.localPosition.x);
+		data.Add(transform.localPosition.y);
+		data.Add(transform.localPosition.z);
+		data.Add(Camera.main.fieldOfView);
+	}
 
 	void WriteRecordedFile() {
         AnimationClip animationClip = new AnimationClip();
@@ -43,7 +57,7 @@ public class CameraMotion : MonoBehaviour {
         // set the animation curves
 		for (int i = 0; i < curveCount; i++) {
             AnimationCurve curve = new AnimationCurve(keyFrames[i]);
-			animationClip.SetCurve("", typeof(Transform), curveNames[i], curve);
+			animationClip.SetCurve("", types[i], curveNames[i], curve);
         }
 
         // make the anim file
@@ -166,7 +180,7 @@ public class CameraMotion : MonoBehaviour {
 	
 	void Update() {
 
-		transform.Translate(speed * Time.deltaTime * MoveSensitivity);
+		transform.Translate(speed * Time.deltaTime * moveSensitivity);
 		//update the speed
 		speed.x += (fromAppData[3]*Time.deltaTime);
 		speed.y += (fromAppData[4]*Time.deltaTime);
@@ -175,14 +189,7 @@ public class CameraMotion : MonoBehaviour {
 		transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(fromAppData[0] * 360f, fromAppData[1] * 360f, fromAppData[2] * 360f), rotationSensitivity);
 		
 		if (recording) {
-			data.Add(Time.realtimeSinceStartup - startTime);
-			data.Add(transform.localRotation.x);
-			data.Add(transform.localRotation.y);
-			data.Add(transform.localRotation.z);
-			data.Add(transform.localRotation.w);
-			data.Add(transform.localPosition.x);
-			data.Add(transform.localPosition.y);
-			data.Add(transform.localPosition.z);
+			WriteToData();
 		}
 	}
 	#endregion
