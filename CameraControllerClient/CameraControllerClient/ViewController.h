@@ -12,7 +12,6 @@
 @interface ViewController : UIViewController <NSStreamDelegate>
 
 - (IBAction)BtnConnectClicked:(id)sender;
-- (IBAction)BtnSendMsg:(id)sender;
 @property (weak, nonatomic) IBOutlet UILabel *labelToast;
 @property (weak, nonatomic) IBOutlet UITextField *textFieldIPAddress;
 @property (nonatomic, retain) NSInputStream *inputStream;

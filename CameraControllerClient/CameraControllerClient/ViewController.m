@@ -63,13 +63,6 @@
     [self initNetworkCommunication: _textFieldIPAddress.text];
 }
 
-- (IBAction)BtnSendMsg:(id)sender {
-    //TODO ggg
-    NSString *response  = [NSString stringWithFormat:@"iam:%@", _textFieldIPAddress.text];
-    NSData *data = [[NSData alloc] initWithData:[response dataUsingEncoding:NSASCIIStringEncoding]];
-    [_outputStream write:[data bytes] maxLength:[data length]];
-}
-
 -(void)stream:(NSStream *)theStream handleEvent:(NSStreamEvent)streamEvent {
     NSString *event;
     switch (streamEvent) {
@@ -145,12 +138,22 @@
     }
     CMAttitude *attitude = deviceMotion.attitude;
     CMAcceleration userAcceleration = deviceMotion.userAcceleration;
+    NSMutableData * data = [NSMutableData dataWithCapacity:0];
+    
     float roll = attitude.roll;
+    [data appendBytes:&roll length:sizeof(float)];
     float pitch = attitude.pitch;
+    [data appendBytes:&pitch length:sizeof(float)];
     float yaw = attitude.yaw;
+    [data appendBytes:&yaw length:sizeof(float)];
     float accX = userAcceleration.x;
+    [data appendBytes:&accX length:sizeof(float)];
     float accY = userAcceleration.y;
+    [data appendBytes:&accY length:sizeof(float)];
     float accZ = userAcceleration.z;
+    [data appendBytes:&accZ length:sizeof(float)];
+    
+    [_outputStream write:[data bytes] maxLength:[data length]];
     
     NSLog(@"Attitude: %f, %f, %f; Accel: %f, %f, %f", roll,pitch,yaw, accX, accY, accZ);
 }
