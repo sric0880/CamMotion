@@ -177,19 +177,19 @@ public class CameraMotion : MonoBehaviour {
 			}
 		}
 	}
-	
+
 	void Update() {
-
-		transform.Translate(speed * Time.deltaTime * moveSensitivity);
-		//update the speed
-		speed.x += (fromAppData[3]*Time.deltaTime);
-		speed.y += (fromAppData[4]*Time.deltaTime);
-		speed.z += (fromAppData[5]*Time.deltaTime);
-
-		transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(fromAppData[0] * 360f, fromAppData[1] * 360f, fromAppData[2] * 360f), rotationSensitivity);
-		
-		if (recording) {
-			WriteToData();
+		if(_stream!=null)
+		{
+//			transform.Translate(speed * Time.deltaTime * moveSensitivity);
+			//update the speed
+			//		speed.x += (fromAppData[3]*Time.deltaTime);
+			//		speed.y += (fromAppData[4]*Time.deltaTime);
+			//		speed.z += (fromAppData[5]*Time.deltaTime);
+			transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(new Vector3(fromAppData[0], fromAppData[1], fromAppData[2])), Time.deltaTime * rotationSensitivity);
+			if (recording) {
+				WriteToData();
+			}
 		}
 	}
 	#endregion

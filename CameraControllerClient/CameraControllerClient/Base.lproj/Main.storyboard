@@ -27,7 +27,7 @@
                                 </connections>
                             </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="192.168.0.105" borderStyle="roundedRect" placeholder="IP Address" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="51P-6y-PTZ">
-                                <rect key="frame" x="26" y="28" width="548" height="30"/>
+                                <rect key="frame" x="26" y="28" width="420" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
                             </textField>
@@ -37,24 +37,33 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="8009" borderStyle="roundedRect" placeholder="Port" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jCO-NL-q60">
+                                <rect key="frame" x="456" y="28" width="118" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="jCO-NL-q60" secondAttribute="trailing" constant="10" id="0Ov-LT-hrK"/>
                             <constraint firstItem="2BF-ex-Ayg" firstAttribute="top" secondItem="51P-6y-PTZ" secondAttribute="bottom" constant="8" id="4D6-4X-eDD"/>
                             <constraint firstItem="51P-6y-PTZ" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="10" id="E2j-ab-TlN"/>
                             <constraint firstAttribute="centerX" secondItem="2BF-ex-Ayg" secondAttribute="centerX" id="EPc-mK-UZG"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="51P-6y-PTZ" secondAttribute="trailing" constant="10" id="OK2-0W-QYP"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="51P-6y-PTZ" secondAttribute="trailing" constant="138" id="OK2-0W-QYP"/>
                             <constraint firstItem="51P-6y-PTZ" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" id="VrI-MQ-nWR"/>
-                            <constraint firstAttribute="centerX" secondItem="51P-6y-PTZ" secondAttribute="centerX" id="WOk-mo-J1R"/>
-                            <constraint firstAttribute="centerX" secondItem="51P-6y-PTZ" secondAttribute="centerX" id="ago-d4-ezP"/>
+                            <constraint firstAttribute="centerX" secondItem="51P-6y-PTZ" secondAttribute="centerX" constant="64" id="WOk-mo-J1R"/>
+                            <constraint firstAttribute="centerX" secondItem="51P-6y-PTZ" secondAttribute="centerX" constant="64" id="ago-d4-ezP"/>
                             <constraint firstAttribute="centerX" secondItem="p9U-vY-FBz" secondAttribute="centerX" id="as8-ne-aXA"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="p9U-vY-FBz" secondAttribute="bottom" constant="214" id="btm-aw-th9"/>
-                            <constraint firstAttribute="centerX" secondItem="51P-6y-PTZ" secondAttribute="centerX" id="uqi-wT-Bqd"/>
+                            <constraint firstItem="jCO-NL-q60" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" id="hqD-aj-Tb2"/>
+                            <constraint firstAttribute="centerX" secondItem="51P-6y-PTZ" secondAttribute="centerX" constant="64" id="uqi-wT-Bqd"/>
+                            <constraint firstItem="jCO-NL-q60" firstAttribute="leading" secondItem="51P-6y-PTZ" secondAttribute="trailing" constant="10" id="z7J-Co-5BN"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="labelToast" destination="p9U-vY-FBz" id="b0W-vz-Ve7"/>
                         <outlet property="textFieldIPAddress" destination="51P-6y-PTZ" id="STz-Ua-fVQ"/>
+                        <outlet property="textFieldPort" destination="jCO-NL-q60" id="aA5-Qc-OAi"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

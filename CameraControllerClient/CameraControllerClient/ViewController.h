@@ -14,6 +14,7 @@
 - (IBAction)BtnConnectClicked:(id)sender;
 @property (weak, nonatomic) IBOutlet UILabel *labelToast;
 @property (weak, nonatomic) IBOutlet UITextField *textFieldIPAddress;
+@property (weak, nonatomic) IBOutlet UITextField *textFieldPort;
 @property (nonatomic, retain) NSInputStream *inputStream;
 @property (nonatomic, retain) NSOutputStream *outputStream;
 @property (nonatomic, retain) CMMotionManager* motionManager;
