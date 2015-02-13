@@ -10,22 +10,26 @@
 	<string>CameraControllerClient</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
+		<key>2683F0BE05B5FA7F87ED7F963A719F8F5C929678</key>
+		<string>https://github.com/sric0880/CamMotion.git</string>
 		<key>E2A681C435FDEA8BEFAF08306FDDF17EA8A12D83</key>
 		<string>https://github.com/sric0880/Animator_Timeline.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>CameraMotion/CameraControllerClient/CameraControllerClient.xcodeproj</string>
+	<string>CameraControllerClient/CameraControllerClient.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
+		<key>2683F0BE05B5FA7F87ED7F963A719F8F5C929678</key>
+		<string>../../..</string>
 		<key>E2A681C435FDEA8BEFAF08306FDDF17EA8A12D83</key>
 		<string>../../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/sric0880/Animator_Timeline.git</string>
+	<string>https://github.com/sric0880/CamMotion.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>E2A681C435FDEA8BEFAF08306FDDF17EA8A12D83</string>
+	<string>2683F0BE05B5FA7F87ED7F963A719F8F5C929678</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
@@ -34,7 +38,15 @@
 			<key>IDESourceControlWCCIdentifierKey</key>
 			<string>E2A681C435FDEA8BEFAF08306FDDF17EA8A12D83</string>
 			<key>IDESourceControlWCCName</key>
-			<string>Assets</string>
+			<string></string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>2683F0BE05B5FA7F87ED7F963A719F8F5C929678</string>
+			<key>IDESourceControlWCCName</key>
+			<string>CameraMotion</string>
 		</dict>
 	</array>
 </dict>

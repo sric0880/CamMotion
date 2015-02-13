@@ -12,6 +12,10 @@
 
 @interface ViewController ()
 @property float scale;
+@property bool isFirstMotion;
+@property float originRoll;
+@property float originPitch;
+@property float originYaw;
 @end
 
 static float const factor = 180/M_PI;
@@ -34,6 +38,9 @@ static float const factor = 180/M_PI;
         
         [_inputStream open];
         [_outputStream open];
+        
+        self.isFirstMotion = true;
+        self.originYaw = 0.0f;
     }
 }
 
@@ -53,7 +60,7 @@ static float const factor = 180/M_PI;
 - (void)viewWillAppear:(BOOL)animated {
      [NSTimer scheduledTimerWithTimeInterval:0.01 target:self selector:@selector(updateDeviceMotion) userInfo:nil repeats:YES];
     self.motionManager = [[CMMotionManager alloc] init];
-    self.motionManager.deviceMotionUpdateInterval = 1.0f/60.0f;
+    self.motionManager.deviceMotionUpdateInterval = 0.01f;
 //    [self.motionManager startDeviceMotionUpdatesUsingReferenceFrame:CMAttitudeReferenceFrameXArbitraryCorrectedZVertical];
     [self.motionManager startDeviceMotionUpdates];
 }
@@ -134,9 +141,15 @@ static float const factor = 180/M_PI;
     CMAcceleration userAcceleration = deviceMotion.userAcceleration;
     NSMutableData * data = [NSMutableData dataWithCapacity:0];
     
+    if (self.isFirstMotion) {
+        self.originYaw = attitude.yaw * factor;
+        self.isFirstMotion = false;
+        return;
+    }
+    
     float roll = attitude.roll * factor + 90;
     [data appendBytes:&roll length:sizeof(float)];
-    float pitch = -attitude.yaw * factor ;
+    float pitch = -attitude.yaw * factor + self.originYaw ;
     [data appendBytes:&pitch length:sizeof(float)];
     float yaw =  attitude.pitch * factor;
     [data appendBytes:&yaw length:sizeof(float)];

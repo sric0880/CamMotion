@@ -9,10 +9,9 @@ using System.Net.Sockets;
 using System.IO;
 
 public class CameraMotion : MonoBehaviour {
-	//    public float moveSpeed;
 	#region Animation Clip Record
-	public float rotationSensitivity = 0.5f;
-	public float moveSensitivity = 2f;
+	public float rotationSensitivity = 0.1f; //the smaller the smoother
+	public float moveSpeed = 2f;
 	private bool recording;
     private float startTime;
 	private List<float> data = new List<float>();
@@ -186,7 +185,7 @@ public class CameraMotion : MonoBehaviour {
 			//		speed.x += (fromAppData[3]*Time.deltaTime);
 			//		speed.y += (fromAppData[4]*Time.deltaTime);
 			//		speed.z += (fromAppData[5]*Time.deltaTime);
-			transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(new Vector3(fromAppData[0], fromAppData[1], fromAppData[2])), Time.deltaTime * rotationSensitivity);
+			transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(new Vector3(fromAppData[0], fromAppData[1], fromAppData[2])), rotationSensitivity*0.5);
 			if (recording) {
 				WriteToData();
 			}
