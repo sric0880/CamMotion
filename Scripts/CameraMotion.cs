@@ -180,12 +180,13 @@ public class CameraMotion : MonoBehaviour {
 	void Update() {
 		if(_stream!=null)
 		{
-//			transform.Translate(speed * Time.deltaTime * moveSensitivity);
-			//update the speed
-			//		speed.x += (fromAppData[3]*Time.deltaTime);
-			//		speed.y += (fromAppData[4]*Time.deltaTime);
-			//		speed.z += (fromAppData[5]*Time.deltaTime);
-			transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(new Vector3(fromAppData[0], fromAppData[1], fromAppData[2])), rotationSensitivity*0.5);
+//			transform.Translate(speed * Time.deltaTime * moveSpeed);
+//			//update the speed
+//			speed.x += (fromAppData[3]*Time.deltaTime);
+//			speed.y += (fromAppData[4]*Time.deltaTime);
+//			speed.z += (fromAppData[5]*Time.deltaTime);
+
+			transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(new Vector3(fromAppData[0], fromAppData[1], fromAppData[2])), rotationSensitivity*0.5f);
 			if (recording) {
 				WriteToData();
 			}

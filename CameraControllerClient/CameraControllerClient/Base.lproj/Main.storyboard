@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Bqh-m7-y2h">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Network-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
+                <viewController title="Network" id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -31,17 +31,16 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
                             </textField>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p9U-vY-FBz">
-                                <rect key="frame" x="279" y="365" width="42" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="8009" borderStyle="roundedRect" placeholder="Port" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jCO-NL-q60">
                                 <rect key="frame" x="456" y="28" width="118" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                             </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p9U-vY-FBz">
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -54,12 +53,14 @@
                             <constraint firstAttribute="centerX" secondItem="51P-6y-PTZ" secondAttribute="centerX" constant="64" id="WOk-mo-J1R"/>
                             <constraint firstAttribute="centerX" secondItem="51P-6y-PTZ" secondAttribute="centerX" constant="64" id="ago-d4-ezP"/>
                             <constraint firstAttribute="centerX" secondItem="p9U-vY-FBz" secondAttribute="centerX" id="as8-ne-aXA"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="p9U-vY-FBz" secondAttribute="bottom" constant="214" id="btm-aw-th9"/>
                             <constraint firstItem="jCO-NL-q60" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" id="hqD-aj-Tb2"/>
+                            <constraint firstItem="p9U-vY-FBz" firstAttribute="top" secondItem="2BF-ex-Ayg" secondAttribute="bottom" constant="10" id="s55-ff-7Ja"/>
                             <constraint firstAttribute="centerX" secondItem="51P-6y-PTZ" secondAttribute="centerX" constant="64" id="uqi-wT-Bqd"/>
                             <constraint firstItem="jCO-NL-q60" firstAttribute="leading" secondItem="51P-6y-PTZ" secondAttribute="trailing" constant="10" id="z7J-Co-5BN"/>
                         </constraints>
                     </view>
+                    <tabBarItem key="tabBarItem" title="Network" image="NetworkItem" id="hmM-q9-6uA"/>
+                    <toolbarItems/>
                     <connections>
                         <outlet property="labelToast" destination="p9U-vY-FBz" id="b0W-vz-Ve7"/>
                         <outlet property="textFieldIPAddress" destination="51P-6y-PTZ" id="STz-Ua-fVQ"/>
@@ -68,6 +69,101 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="-125" y="-235"/>
+        </scene>
+        <!--Accelerameter Graph-->
+        <scene sceneID="nyL-7X-nvN">
+            <objects>
+                <viewController title="Accelerameter Graph" id="k4q-Jm-4Wf" customClass="GraphViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="kHC-h6-3iA"/>
+                        <viewControllerLayoutGuide type="bottom" id="llE-7j-1EV"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="3Gn-Ls-C3k">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YXn-7z-3Vf" customClass="GraphView">
+                                <rect key="frame" x="0.0" y="20" width="600" height="112"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="112" id="v3b-RW-tQj"/>
+                                </constraints>
+                            </view>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="1" translatesAutoresizingMaskIntoConstraints="NO" id="VCR-hr-LKq">
+                                <rect key="frame" x="144" y="515" width="151" height="29"/>
+                                <segments>
+                                    <segment title="Low Pass"/>
+                                    <segment title="High Pass"/>
+                                </segments>
+                                <connections>
+                                    <action selector="filterChoose:" destination="k4q-Jm-4Wf" eventType="valueChanged" id="mUq-QX-oeW"/>
+                                </connections>
+                            </segmentedControl>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="VTK-Jm-Rhf">
+                                <rect key="frame" x="335" y="515" width="139" height="29"/>
+                                <segments>
+                                    <segment title="Standard"/>
+                                    <segment title="Adaptive"/>
+                                </segments>
+                                <connections>
+                                    <action selector="typeChoose:" destination="k4q-Jm-4Wf" eventType="valueChanged" id="d52-N8-VCe"/>
+                                </connections>
+                            </segmentedControl>
+                            <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="atw-Ih-BB8" customClass="GraphView">
+                                <rect key="frame" x="0.0" y="132" width="600" height="112"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="112" id="Lwu-RN-Px0"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="llE-7j-1EV" firstAttribute="top" secondItem="VTK-Jm-Rhf" secondAttribute="bottom" constant="8" id="Ixr-Pu-9kt"/>
+                            <constraint firstAttribute="centerX" secondItem="VCR-hr-LKq" secondAttribute="centerX" constant="80" id="bd4-76-ycT"/>
+                            <constraint firstItem="atw-Ih-BB8" firstAttribute="leading" secondItem="3Gn-Ls-C3k" secondAttribute="leadingMargin" constant="-16" id="be7-bL-VNJ"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="atw-Ih-BB8" secondAttribute="trailing" constant="-16" id="hxl-zP-Ugx"/>
+                            <constraint firstItem="YXn-7z-3Vf" firstAttribute="leading" secondItem="3Gn-Ls-C3k" secondAttribute="leadingMargin" constant="-16" id="iq8-se-BNr"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="YXn-7z-3Vf" secondAttribute="trailing" constant="-16" id="ks8-Xe-mEa"/>
+                            <constraint firstItem="atw-Ih-BB8" firstAttribute="top" secondItem="YXn-7z-3Vf" secondAttribute="bottom" id="mA9-h3-aj1"/>
+                            <constraint firstAttribute="centerX" secondItem="VTK-Jm-Rhf" secondAttribute="centerX" constant="-105" id="nPA-Qx-IvV"/>
+                            <constraint firstItem="YXn-7z-3Vf" firstAttribute="top" secondItem="kHC-h6-3iA" secondAttribute="bottom" id="vYX-xG-SMp"/>
+                            <constraint firstItem="llE-7j-1EV" firstAttribute="top" secondItem="VCR-hr-LKq" secondAttribute="bottom" constant="8" id="vbR-HE-5xW"/>
+                        </constraints>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Accelerameter Graph" image="GraphItem" id="hEU-hW-4rr"/>
+                    <connections>
+                        <outlet property="filterGraphView" destination="atw-Ih-BB8" id="vDG-Z7-sEw"/>
+                        <outlet property="filterPass" destination="VCR-hr-LKq" id="Ch1-xx-DGF"/>
+                        <outlet property="filterType" destination="VTK-Jm-Rhf" id="ebA-V6-xiO"/>
+                        <outlet property="graphView" destination="YXn-7z-3Vf" id="XXt-Gq-nBm"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="rZr-dg-vNl" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-125" y="470"/>
+        </scene>
+        <!--MainTabBar-->
+        <scene sceneID="m3I-kT-k61">
+            <objects>
+                <tabBarController title="MainTabBar" id="Bqh-m7-y2h" sceneMemberID="viewController">
+                    <nil key="simulatedBottomBarMetrics"/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" itemPositioning="fill" id="UBA-xm-wFP">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="fX0-uf-yFR"/>
+                        <segue destination="k4q-Jm-4Wf" kind="relationship" relationship="viewControllers" id="JyI-yO-u0H"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0d0-dX-rpf" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-904" y="158"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="GraphItem" width="25" height="25"/>
+        <image name="NetworkItem" width="25" height="25"/>
+    </resources>
 </document>

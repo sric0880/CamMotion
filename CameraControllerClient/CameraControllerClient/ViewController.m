@@ -7,15 +7,24 @@
 //
 
 #import "ViewController.h"
-
-
+#import "GraphViewController.h"
+#import "Global.h"
 
 @interface ViewController ()
-@property float scale;
-@property bool isFirstMotion;
-@property float originRoll;
-@property float originPitch;
-@property float originYaw;
+{
+    float scale;
+    bool isFirstMotion;
+    float originYaw;
+    
+    NSInputStream *inputStream;
+    NSOutputStream *outputStream;
+    CMMotionManager* motionManager;
+}
+
+//@property (nonatomic, retain) NSInputStream *inputStream;
+//@property (nonatomic, retain) NSOutputStream *outputStream;
+//@property (nonatomic, retain) CMMotionManager* motionManager;
+
 @end
 
 static float const factor = 180/M_PI;
@@ -23,54 +32,89 @@ static float const factor = 180/M_PI;
 @implementation ViewController
 
 - (void)initNetworkCommunication:(NSString*)IPAddress withPort:(UInt32)Port {
-    if (_inputStream == nil && _outputStream == nil) {
+    if (inputStream == nil && outputStream == nil) {
         CFReadStreamRef readStream;
         CFWriteStreamRef writeStream;
         CFStreamCreatePairWithSocketToHost(NULL, (__bridge CFStringRef)IPAddress, Port, &readStream, &writeStream);
-        _inputStream = (__bridge NSInputStream *)readStream;
-        _outputStream = (__bridge NSOutputStream *)writeStream;
+        inputStream = (__bridge NSInputStream *)readStream;
+        outputStream = (__bridge NSOutputStream *)writeStream;
         
-        [_inputStream setDelegate:self];
-        [_outputStream setDelegate:self];
+        [inputStream setDelegate:self];
+        [outputStream setDelegate:self];
         
-        [_inputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-        [_outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+        [inputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+        [outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
         
-        [_inputStream open];
-        [_outputStream open];
+        [inputStream open];
+        [outputStream open];
         
-        self.isFirstMotion = true;
-        self.originYaw = 0.0f;
+        isFirstMotion = true;
+        originYaw = 0.0f;
     }
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.scale = 1.0f;
+    scale = 1.0f;
     UIPinchGestureRecognizer *pgr = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinch:)];
     [pgr setDelegate:self];
     [self.view addGestureRecognizer:pgr];
     
+    motionManager = [[CMMotionManager alloc] init];
+    motionManager.deviceMotionUpdateInterval = 1/kUpdateFrequency;
+//    [self.motionManager startDeviceMotionUpdatesUsingReferenceFrame:CMAttitudeReferenceFrameXArbitraryCorrectedZVertical];
+    [motionManager startDeviceMotionUpdates];
+    [motionManager startDeviceMotionUpdatesToQueue:[NSOperationQueue mainQueue] withHandler:^(CMDeviceMotion *deviceMotion, NSError *error)
+     {
+         if (outputStream == nil) {
+             return;
+         }
+         if(deviceMotion == nil)
+         {
+             return;
+         }
+         
+         CMAttitude *attitude = deviceMotion.attitude;
+         
+         CMAcceleration userAcceleration = deviceMotion.userAcceleration;
+         NSMutableData * data = [NSMutableData dataWithCapacity:0];
+         
+         if (isFirstMotion) {
+             originYaw = attitude.yaw * factor;
+             isFirstMotion = false;
+             return;
+         }
+         
+         float roll = attitude.roll * factor + 90;
+         [data appendBytes:&roll length:sizeof(float)];
+         float pitch = -attitude.yaw * factor + originYaw;
+         [data appendBytes:&pitch length:sizeof(float)];
+         float yaw =  attitude.pitch * factor;
+         [data appendBytes:&yaw length:sizeof(float)];
+         
+         //update the globals for graph view
+         double acceX = userAcceleration.x * G_Force;
+         double acceY = userAcceleration.y * G_Force;
+         double acceZ = userAcceleration.z * G_Force;
+         
+         GraphViewController* gvc = (GraphViewController*)[self.tabBarController.viewControllers objectAtIndex:1];
+         [gvc updateGraph:acceX y:acceY z:acceZ];
+         
+         float accX = acceX;
+         [data appendBytes:&accX length:sizeof(float)];
+         float accY = acceY;
+         [data appendBytes:&accY length:sizeof(float)];
+         float accZ = acceZ;
+         [data appendBytes:&accZ length:sizeof(float)];
+         
+         [outputStream write:[data bytes] maxLength:[data length]];
+         
+         NSLog(@"Attitude: %f, %f, %f; Accel: %f, %f, %f", roll, pitch, yaw, accX, accY, accZ);
+     }];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-     [NSTimer scheduledTimerWithTimeInterval:0.01 target:self selector:@selector(updateDeviceMotion) userInfo:nil repeats:YES];
-    self.motionManager = [[CMMotionManager alloc] init];
-    self.motionManager.deviceMotionUpdateInterval = 0.01f;
-//    [self.motionManager startDeviceMotionUpdatesUsingReferenceFrame:CMAttitudeReferenceFrameXArbitraryCorrectedZVertical];
-    [self.motionManager startDeviceMotionUpdates];
-}
-
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-    if(self.motionManager != nil) {
-        [self.motionManager stopDeviceMotionUpdates];
-        self.motionManager = nil;
-    }
 }
 
 - (IBAction)BtnConnectClicked:(id)sender {
@@ -85,13 +129,13 @@ static float const factor = 180/M_PI;
         [self printErrorInfo:theStream];
         [self close];
     }else if(streamEvent == NSStreamEventHasBytesAvailable) {
-        if (theStream == _inputStream) {
+        if (theStream == inputStream) {
             NSMutableData *input = [[NSMutableData alloc] init];
             uint8_t buffer[1024];
             NSInteger len;
-            while([_inputStream hasBytesAvailable])
+            while([inputStream hasBytesAvailable])
             {
-                len = [_inputStream read:buffer maxLength:sizeof(buffer)];
+                len = [inputStream read:buffer maxLength:sizeof(buffer)];
                 if (len > 0)
                 {
                     [input appendBytes:buffer length:len];
@@ -114,60 +158,20 @@ static float const factor = 180/M_PI;
 
 -(void)close
 {
-    [_outputStream close];
-    [_outputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-    [_outputStream setDelegate:nil];
-    _outputStream = nil;
-    [_inputStream close];
-    [_inputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-    [_inputStream setDelegate:nil];
-    _inputStream = nil;
+    [outputStream close];
+    [outputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+    [outputStream setDelegate:nil];
+    outputStream = nil;
+    [inputStream close];
+    [inputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+    [inputStream setDelegate:nil];
+    inputStream = nil;
     NSLog(@"Connection closed.");
-}
-
--(void)updateDeviceMotion
-{
-    if (_outputStream == nil) {
-        return;
-    }
-    CMDeviceMotion *deviceMotion = self.motionManager.deviceMotion;
-    if(deviceMotion == nil)
-    {
-        return;
-    }
-    
-    CMAttitude *attitude = deviceMotion.attitude;
-    
-    CMAcceleration userAcceleration = deviceMotion.userAcceleration;
-    NSMutableData * data = [NSMutableData dataWithCapacity:0];
-    
-    if (self.isFirstMotion) {
-        self.originYaw = attitude.yaw * factor;
-        self.isFirstMotion = false;
-        return;
-    }
-    
-    float roll = attitude.roll * factor + 90;
-    [data appendBytes:&roll length:sizeof(float)];
-    float pitch = -attitude.yaw * factor + self.originYaw ;
-    [data appendBytes:&pitch length:sizeof(float)];
-    float yaw =  attitude.pitch * factor;
-    [data appendBytes:&yaw length:sizeof(float)];
-    float accX = userAcceleration.x;
-    [data appendBytes:&accX length:sizeof(float)];
-    float accY = userAcceleration.y;
-    [data appendBytes:&accY length:sizeof(float)];
-    float accZ = userAcceleration.z;
-    [data appendBytes:&accZ length:sizeof(float)];
-    
-    [_outputStream write:[data bytes] maxLength:[data length]];
-    
-//    NSLog(@"Attitude: %f, %f, %f; Accel: %f, %f, %f", roll, pitch, yaw, accX, accY, accZ);
 }
 
 -(void)pinch:(id)sender
 {
-    self.scale = [(UIPinchGestureRecognizer*)sender scale];
+    scale = [(UIPinchGestureRecognizer*)sender scale];
 //    NSLog(@"scale: %f", self.scale);
 }
 @end

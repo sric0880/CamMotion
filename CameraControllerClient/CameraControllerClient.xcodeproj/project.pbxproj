@@ -13,6 +13,10 @@
 		CF9367A71A886DDD006A9ED4 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CF9367A61A886DDD006A9ED4 /* ViewController.m */; };
 		CF9367AA1A886DDD006A9ED4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF9367A81A886DDD006A9ED4 /* Main.storyboard */; };
 		CF9367AC1A886DDD006A9ED4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF9367AB1A886DDD006A9ED4 /* Images.xcassets */; };
+		CFDD646C1A8DDC4200E95D04 /* AccelerometerFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = CFDD64691A8DDC4200E95D04 /* AccelerometerFilter.m */; };
+		CFDD646D1A8DDC4200E95D04 /* GraphView.m in Sources */ = {isa = PBXBuildFile; fileRef = CFDD646B1A8DDC4200E95D04 /* GraphView.m */; };
+		CFDD64711A8E003D00E95D04 /* GraphViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CFDD64701A8E003D00E95D04 /* GraphViewController.m */; };
+		CFDD64741A8E0A8A00E95D04 /* Global.m in Sources */ = {isa = PBXBuildFile; fileRef = CFDD64731A8E0A8A00E95D04 /* Global.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +30,14 @@
 		CF9367A61A886DDD006A9ED4 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		CF9367A91A886DDD006A9ED4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CF9367AB1A886DDD006A9ED4 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		CFDD64681A8DDC4200E95D04 /* AccelerometerFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccelerometerFilter.h; sourceTree = "<group>"; };
+		CFDD64691A8DDC4200E95D04 /* AccelerometerFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccelerometerFilter.m; sourceTree = "<group>"; };
+		CFDD646A1A8DDC4200E95D04 /* GraphView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphView.h; sourceTree = "<group>"; };
+		CFDD646B1A8DDC4200E95D04 /* GraphView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GraphView.m; sourceTree = "<group>"; };
+		CFDD646F1A8E003D00E95D04 /* GraphViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphViewController.h; sourceTree = "<group>"; };
+		CFDD64701A8E003D00E95D04 /* GraphViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GraphViewController.m; sourceTree = "<group>"; };
+		CFDD64721A8E09E500E95D04 /* Global.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Global.h; sourceTree = "<group>"; };
+		CFDD64731A8E0A8A00E95D04 /* Global.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Global.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,10 +72,18 @@
 		CF93679D1A886DDD006A9ED4 /* CameraControllerClient */ = {
 			isa = PBXGroup;
 			children = (
+				CFDD64681A8DDC4200E95D04 /* AccelerometerFilter.h */,
+				CFDD64691A8DDC4200E95D04 /* AccelerometerFilter.m */,
+				CFDD646A1A8DDC4200E95D04 /* GraphView.h */,
+				CFDD646B1A8DDC4200E95D04 /* GraphView.m */,
 				CF9367A21A886DDD006A9ED4 /* AppDelegate.h */,
 				CF9367A31A886DDD006A9ED4 /* AppDelegate.m */,
 				CF9367A51A886DDD006A9ED4 /* ViewController.h */,
 				CF9367A61A886DDD006A9ED4 /* ViewController.m */,
+				CFDD646F1A8E003D00E95D04 /* GraphViewController.h */,
+				CFDD64701A8E003D00E95D04 /* GraphViewController.m */,
+				CFDD64721A8E09E500E95D04 /* Global.h */,
+				CFDD64731A8E0A8A00E95D04 /* Global.m */,
 				CF9367A81A886DDD006A9ED4 /* Main.storyboard */,
 				CF9367AB1A886DDD006A9ED4 /* Images.xcassets */,
 				CF93679E1A886DDD006A9ED4 /* Supporting Files */,
@@ -151,8 +171,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				CF9367A71A886DDD006A9ED4 /* ViewController.m in Sources */,
+				CFDD646D1A8DDC4200E95D04 /* GraphView.m in Sources */,
+				CFDD646C1A8DDC4200E95D04 /* AccelerometerFilter.m in Sources */,
+				CFDD64741A8E0A8A00E95D04 /* Global.m in Sources */,
 				CF9367A41A886DDD006A9ED4 /* AppDelegate.m in Sources */,
 				CF9367A11A886DDD006A9ED4 /* main.m in Sources */,
+				CFDD64711A8E003D00E95D04 /* GraphViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
