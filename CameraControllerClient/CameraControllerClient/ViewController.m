@@ -9,12 +9,24 @@
 #import "ViewController.h"
 #import "GraphViewController.h"
 #import "Global.h"
+#import "AccelerometerFilter.h"
 
 @interface ViewController ()
 {
     float scale;
     bool isFirstMotion;
     float originYaw;
+    NSDate *lastDate;
+    double speedx;
+    double speedy;
+    double speedz;
+    double lastAcceX;
+    double lastAcceY;
+    double lastAcceZ;
+    float sendDataArray[6];
+    
+    AccelerometerFilter *highPassFilter;
+    AccelerometerFilter *lowPassFilter;
     
     NSInputStream *inputStream;
     NSOutputStream *outputStream;
@@ -56,6 +68,15 @@ static float const factor = 180/M_PI;
 - (void)viewDidLoad {
     [super viewDidLoad];
     scale = 1.0f;
+    speedx = speedy = speedz = 0;
+    lastAcceX = lastAcceY = lastAcceZ = 0;
+    
+    highPassFilter = [[HighpassFilter alloc] initWithSampleRate:kUpdateFrequency cutoffFrequency:5.0];
+    lowPassFilter = [[LowpassFilter alloc] initWithSampleRate:kUpdateFrequency cutoffFrequency:60.0];
+    // Set the adaptive flag
+    highPassFilter.adaptive = false;
+    lowPassFilter.adaptive = false;
+    
     UIPinchGestureRecognizer *pgr = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinch:)];
     [pgr setDelegate:self];
     [self.view addGestureRecognizer:pgr];
@@ -77,7 +98,6 @@ static float const factor = 180/M_PI;
          CMAttitude *attitude = deviceMotion.attitude;
          
          CMAcceleration userAcceleration = deviceMotion.userAcceleration;
-         NSMutableData * data = [NSMutableData dataWithCapacity:0];
          
          if (isFirstMotion) {
              originYaw = attitude.yaw * factor;
@@ -85,31 +105,72 @@ static float const factor = 180/M_PI;
              return;
          }
          
-         float roll = attitude.roll * factor + 90;
-         [data appendBytes:&roll length:sizeof(float)];
-         float pitch = -attitude.yaw * factor + originYaw;
-         [data appendBytes:&pitch length:sizeof(float)];
-         float yaw =  attitude.pitch * factor;
-         [data appendBytes:&yaw length:sizeof(float)];
+         sendDataArray[0] = attitude.roll * factor + 90;
+         sendDataArray[1] = -attitude.yaw * factor + originYaw;
+         sendDataArray[2] =  attitude.pitch * factor;
+         
+         //preview the curve of the acceleration data
+         GraphViewController* gvc = (GraphViewController*)[self.tabBarController.viewControllers objectAtIndex:1];
          
          //update the globals for graph view
          double acceX = userAcceleration.x * G_Force;
          double acceY = userAcceleration.y * G_Force;
          double acceZ = userAcceleration.z * G_Force;
          
-         GraphViewController* gvc = (GraphViewController*)[self.tabBarController.viewControllers objectAtIndex:1];
-         [gvc updateGraph:acceX y:acceY z:acceZ];
+         //the acceleration graph for test
+//       [gvc updateGraph:acceX y:acceY z:acceZ];
          
-         float accX = acceX;
-         [data appendBytes:&accX length:sizeof(float)];
-         float accY = acceY;
-         [data appendBytes:&accY length:sizeof(float)];
-         float accZ = acceZ;
-         [data appendBytes:&accZ length:sizeof(float)];
+         //use low pass filter to smooth acceleration data
+         [lowPassFilter addX:acceX y:acceY z:acceZ];
+         acceX = lowPassFilter.x;
+         acceY = lowPassFilter.y;
+         acceZ = lowPassFilter.z;
          
-         [outputStream write:[data bytes] maxLength:[data length]];
+         //calculate the speed.
+         //refer to the link: http://stackoverflow.com/questions/6647314/how-can-i-find-distance-traveled-with-a-gyroscope-and-accelerometer
+         NSDate* currentDate = [NSDate date];
+         NSTimeInterval delta;
+         if (lastDate==nil) {
+             delta = 0;
+         }else {
+             delta = [currentDate timeIntervalSinceDate:lastDate];
+         }
+         lastDate = currentDate;
+         speedx+=delta*(acceX+lastAcceX)/2;
+         speedy+=delta*(acceY+lastAcceY)/2;
+         speedz+=delta*(acceZ+lastAcceZ)/2;
+         lastAcceX = acceX;
+         lastAcceY = acceY;
+         lastAcceZ = acceZ;
          
-         NSLog(@"Attitude: %f, %f, %f; Accel: %f, %f, %f", roll, pitch, yaw, accX, accY, accZ);
+         //speed need to use high pass filter
+         [highPassFilter addX:speedx y:speedy z:speedz];
+         //preview the speed graph for test
+         [gvc updateGraph:speedx y:speedy z:speedz];
+         
+         speedx = highPassFilter.x ;
+         speedy = highPassFilter.y ;
+         speedz = highPassFilter.z ;
+         
+         ////if speed is very small then assign it zero
+         if (fabs(speedx) < 0.001) {
+             speedx = 0;
+         }
+         if (fabs(speedy) < 0.001) {
+             speedy = 0;
+         }
+         if (fabs(speedz) < 0.001) {
+             speedz = 0;
+         }
+         
+         //cast it to float for Unity3d
+         sendDataArray[3] = speedx ;
+         sendDataArray[4] = speedz ;
+         sendDataArray[5] = speedy ;
+         
+         NSLog(@"%f, %f, %f", sendDataArray[3], sendDataArray[4], sendDataArray[5]);
+         
+         [outputStream write:(const uint8_t*)sendDataArray maxLength:sizeof(float)*6];
      }];
 }
 

@@ -23,7 +23,7 @@
 {
     [super viewDidLoad];
     useAdaptive = false;
-    [self changeFilter:[LowpassFilter class]];
+    [self changeFilter:[LowpassFilter class]]; //it's better to use low pass filter
     
     [self.graphView setIsAccessibilityElement:YES];
     [self.graphView setAccessibilityLabel:NSLocalizedString(@"Graph View", @"")];
@@ -64,7 +64,7 @@
     if (filterClass != [filter class])
     {
         // And if it is, release the old one and create a new one.
-        filter = [[filterClass alloc] initWithSampleRate:kUpdateFrequency cutoffFrequency:5.0];
+        filter = [[filterClass alloc] initWithSampleRate:kUpdateFrequency cutoffFrequency:30];
         // Set the adaptive flag
         filter.adaptive = useAdaptive;
     }

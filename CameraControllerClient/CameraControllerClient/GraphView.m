@@ -53,7 +53,7 @@
 // to cache previously drawn content and arranges them carefully to create an illusion that we are
 // redrawing the entire graph every frame.
 #define LINE_HEIGHT 16.0
-#define SCALE 8.0
+#define SCALE 32
 #pragma mark Quartz Helpers
 
 // Functions used to draw all content

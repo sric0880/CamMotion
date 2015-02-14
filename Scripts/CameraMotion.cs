@@ -11,7 +11,7 @@ using System.IO;
 public class CameraMotion : MonoBehaviour {
 	#region Animation Clip Record
 	public float rotationSensitivity = 0.1f; //the smaller the smoother
-	public float moveSpeed = 2f;
+	public float moveSpeed = 10f;
 	private bool recording;
     private float startTime;
 	private List<float> data = new List<float>();
@@ -84,7 +84,7 @@ public class CameraMotion : MonoBehaviour {
 //	private float acceY;
 //	private float acceZ;
 	private float[] fromAppData = new float[6];
-	private Vector3 speed = new Vector3();
+	private Vector3 speed = new Vector3(0,0,0);
 
 	//TODO add more
 
@@ -105,10 +105,22 @@ public class CameraMotion : MonoBehaviour {
 					_stream = _client.GetStream();
 					
 					int length;
+					int i = 0;
 					// Loop to receive all the data sent by the client.
 					while((length = _stream.Read(bytes, 0, bytes.Length))!=0)
 					{
-						ParseFrom(bytes, 0, length);
+						int n = length/24;
+						int startIndex = (n>0?n-1:0)*24;
+						length = length - startIndex;
+						int num = length/4;
+						while(num != 0)
+						{
+							fromAppData[i] = System.BitConverter.ToSingle(bytes, startIndex);
+							startIndex+=sizeof(float);
+							++i;
+							if(i == fromAppData.Length) i = 0;
+							--num;
+						}
 					}
 					_stream.Close();
 					// Shutdown and end connection
@@ -133,15 +145,6 @@ public class CameraMotion : MonoBehaviour {
 		Debug.Log("Tcp listener stopped.");
 	}
 
-	int ParseFrom(byte[] data, int startIndex, int length){
-		if( fromAppData.Length * sizeof(float) > length) return 0;
-		for(int i = 0; i < fromAppData.Length; ++i)
-		{
-			fromAppData[i] = System.BitConverter.ToSingle(data, startIndex);
-			startIndex+=sizeof(float);
-		}
-		return startIndex;
-	}
 	#endregion
 
 	#region Main
@@ -162,6 +165,10 @@ public class CameraMotion : MonoBehaviour {
 		if(_thread != null) _thread.Join();
 		Debug.Log("Thead end.");
 	}
+
+	private AnimationCurve _curveSpeedX = new AnimationCurve();
+	private AnimationCurve _curveSpeedY = new AnimationCurve();
+	private AnimationCurve _curveSpeedZ = new AnimationCurve();
 	
 	void OnGUI() {
 		if (recording) {
@@ -175,16 +182,24 @@ public class CameraMotion : MonoBehaviour {
 				startTime = Time.realtimeSinceStartup;
 			}
 		}
+
+		EditorGUI.CurveField(new Rect(20, 70, 200, 20), "Speed X", _curveSpeedX);
+		EditorGUI.CurveField(new Rect(20, 90, 200, 20), "Speed Y", _curveSpeedY);
+		EditorGUI.CurveField(new Rect(20, 110, 200, 20), "Speed Z", _curveSpeedZ);
 	}
 
 	void Update() {
 		if(_stream!=null)
 		{
-//			transform.Translate(speed * Time.deltaTime * moveSpeed);
-//			//update the speed
-//			speed.x += (fromAppData[3]*Time.deltaTime);
-//			speed.y += (fromAppData[4]*Time.deltaTime);
-//			speed.z += (fromAppData[5]*Time.deltaTime);
+			transform.Translate(speed * Time.deltaTime * moveSpeed);
+			//update the speed
+			speed.x = fromAppData[3];
+			speed.y = fromAppData[4];
+			speed.z = fromAppData[5];
+//			_curveSpeedX.AddKey(new Keyframe(Time.time, speed.x));
+//			_curveSpeedY.AddKey(new Keyframe(Time.time, speed.y));
+//			_curveSpeedZ.AddKey(new Keyframe(Time.time, speed.z));
+			Debug.Log("x, y, z:" + speed.x+", " + speed.y+", " + speed.z);
 
 			transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(new Vector3(fromAppData[0], fromAppData[1], fromAppData[2])), rotationSensitivity*0.5f);
 			if (recording) {

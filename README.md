@@ -1,5 +1,7 @@
 # CamMotion
-Use iPhone to control the `transform` of the Camera in Unity3D via TCP, as well as the `fieldOfView` when pinching on the screen.
+Use iPhone to control the `transform`(translation and rotation) of the Camera in Unity3D via TCP.
+
+Translation is calculated using acceleration data which is smoothed by pass filter(but it doesn't work well). You can preview the data graph for test.
 
 You can record your own animation clip file, to record the motion track of the camera, generating an .anim file in the asset for reusing it later.
 

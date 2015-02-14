@@ -89,7 +89,7 @@
                                     <constraint firstAttribute="height" constant="112" id="v3b-RW-tQj"/>
                                 </constraints>
                             </view>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="1" translatesAutoresizingMaskIntoConstraints="NO" id="VCR-hr-LKq">
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="VCR-hr-LKq">
                                 <rect key="frame" x="144" y="515" width="151" height="29"/>
                                 <segments>
                                     <segment title="Low Pass"/>
